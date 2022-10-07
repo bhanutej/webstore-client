@@ -1,0 +1,38 @@
+.news-letter-subscription-container {
+  margin: 3rem 0;
+  padding: 3rem 0;
+  background-color: #003459;
+}
+
+.news-letter-subscription-container p{
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 55px;
+  color: #FFFFFF;
+  padding-left: 2rem;
+  margin-bottom: 0 !important;
+}
+
+.news-letter-subscription-container .letter-form{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.news-letter-subscription-container .letter-form .ant-input{  
+  width: 75%;
+  color: #FFFFFF;
+  background: transparent;
+}
+
+.news-letter-subscription-container .letter-form button {
+  background: #fff;
+  border: none;
+  padding: 5px 1rem;
+  color: #003459;
+  font-weight: 500;
+  cursor: pointer;
+}
+.news-letter-subscription-container #horizontal-row{
+  align-items: center;
+}

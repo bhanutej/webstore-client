@@ -1,0 +1,16 @@
+.primary-nav {
+  background: #003459;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.primary-nav a {
+  color: #ffffff;
+}
+
+.navbarMenus a {
+  padding: 0 10px;
+}

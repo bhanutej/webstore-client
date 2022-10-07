@@ -1,0 +1,119 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-title {
+  margin: 3rem 0;
+  color: #003459;
+  font-weight: 700;
+  font-size: 70px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.welcome-description {
+  color: #3B3B3B;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 29px;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.list-products-btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-list-products {
+  background-color: #003459;
+  color: #ffffff;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.top-products-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+.top-products-container > .products-title {
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 40px;
+  color: #3B3B3B;
+}
+
+.how-it-work-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.how-it-work-title > p {
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 40px;
+  color: #3B3B3B;
+}
+
+.how-it-work-tab-container .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #ffffff;
+  text-shadow: 0 0 .25px currentcolor;
+  background-color: #003459;
+  padding: 0.5rem 3rem;
+  border-radius: 5px 5px 0 0;
+  font-weight: 600;
+}
+
+.how-it-work-tab-container .ant-tabs-nav::before {
+  border-bottom: 1px solid #003459;
+}
+.how-it-work-tab-container .ant-tabs-tab {
+  padding: 0;
+}
+.how-it-work-tab-container .work-image-container {
+  width: 542px;
+  height: 304px;
+  background: #D9D9D9;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  width: 150px;
+  height: 45px;
+  background: #003459;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.btn-plain {
+  width: 150px;
+  height: 45px;
+  background: transparent;
+  border-radius: 6px;
+  border-color: #003459;
+  color: #003459;
+  cursor: pointer;
+}
+
+.btn-chip {
+  height: 30px;
+  background: transparent;
+  border-radius: 6px;
+  color: red;
+  cursor: pointer;
+  border: 1px solid red;
+}

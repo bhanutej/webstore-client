@@ -1,0 +1,28 @@
+.custom-select-container .label {
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.custom-select-container .custom-select-box {
+  width: 100%;
+  height: 55px;
+  background: #FFFFFF;
+  border: 1px solid rgba(59, 59, 59, 0.4);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.custom-select-container .custom-select-box .ant-select-selector{
+  height: 100%;
+}
+
+.custom-select-container .custom-select-box .ant-select-selector .ant-select-selection-search-input{
+  height: 100%;
+}
+.custom-select-container .custom-select-box .ant-select-selector .ant-select-selection-item{
+  display: flex;
+  align-items: center;
+}

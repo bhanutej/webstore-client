@@ -1,0 +1,15 @@
+.custom-input-container .label {
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.custom-input-container .custom-input-box {
+  height: 55px;
+  background: #FFFFFF;
+  border: 1px solid rgba(59, 59, 59, 0.4);
+  border-radius: 4px;
+  font-size: 1rem;
+}

@@ -1,0 +1,60 @@
+.add-product-form-container .features-row-container {
+  display: flex;
+  align-items: center;
+}
+
+.add-product-form-container .form-title {
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 38px;
+  color: #003459;
+}
+
+.add-product-form-container .feature-list-label-container{
+  margin-top: 1rem;
+}
+
+.add-product-form-container .feature-list-label-container .feature-list-label-title{
+  margin-bottom: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #757575;
+}
+
+.add-product-form-container .feature-list-label-container .feature-list-label-sub-title{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #757575;
+}
+
+.add-product-form-container .add-more-feature-lable{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #3757C7;
+  cursor: pointer;
+  text-align: end;
+  margin-top: 1rem;
+}
+
+.add-product-form-container .remove-btn-container{
+  text-align: end;
+}
+
+.add-product-form-container .attachment-label{
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #757575;
+}
+
+.action-container {
+  display: flex;
+  justify-content: end;
+}
+
+.add-product-form-container .action-container button{
+  margin-left: 2rem;
+}

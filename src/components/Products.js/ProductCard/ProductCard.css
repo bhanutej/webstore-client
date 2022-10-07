@@ -1,0 +1,20 @@
+.product-card-container {
+  width: 266px;
+  height: 100px;
+  background: #003459;
+  border: 1px solid #003459;
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.product-card-container > .ant-image {
+  width: 100px;
+}
+.product-card-container > .ant-image > .ant-image-img {
+  border-radius: 50%;
+  padding: 5px;
+}
+
+
