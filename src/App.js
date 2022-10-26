@@ -11,6 +11,7 @@ import { Login } from './components/Authentications/Login';
 import { AuthProvider } from './auth-context/auth';
 import { NewProductForm } from './components/Products.js/ProductForm/ProductForm';
 import Protected from './auth-context/Protected';
+import { ProductView } from './components/Products.js/ProductView/ProductView';
 
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if ( graphqlErrors ) {
@@ -62,6 +63,11 @@ function App() {
             <Route path='/addProduct' element={
               <Protected>
                 <NewProductForm />
+              </Protected>
+            } />
+            <Route path='/productView/:PRODUCT_ID' element={
+              <Protected>
+                <ProductView />
               </Protected>
             } />
           </Routes>

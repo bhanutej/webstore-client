@@ -15,6 +15,30 @@ export const LOAD_PRODUCTS = gql`
   }
 `;
 
+export const LOAD_PRODUCT = gql`
+  query Product($productId: Int!) {
+    product(productId: $productId) {
+      id
+      name
+      companyName
+      email
+      contactPerson
+      contact
+      description
+      logo
+      companyUrl
+      status
+      publishedAt
+      keyWords
+      features
+      category {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const LOAD_HOME_PRODUCTS = gql`
   query Products {
     products(limit: 8) {

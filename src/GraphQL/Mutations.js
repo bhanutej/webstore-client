@@ -31,6 +31,19 @@ export const ADD_NEWS_SUBSCRIBER_MUTATION = gql`
   }
 `;
 
+export const PUBLISH = gql`
+  mutation publish(
+    $productId: Int!
+  ) {
+    publish( input: {
+      productId: $productId
+    }
+    ) {
+      message
+    }
+  }
+`;
+
 export const ADD_PRODUCT = gql`
   mutation AddProduct($input: ProductInput!) {
     addProduct(input: $input) {
@@ -47,7 +60,7 @@ export const ADD_PRODUCT = gql`
       publishedAt
       keyWords
       features
-      attachments
+      # attachments
       categoryId
     }
   }
@@ -69,7 +82,7 @@ export const UPDATE_PRODUCT = gql`
       publishedAt
       keyWords
       features
-      attachments
+      # attachments
       categoryId
     }
   }

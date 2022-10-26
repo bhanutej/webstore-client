@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Col, Row, Spin, Upload, notification } from 'antd';
+import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -8,24 +9,19 @@ import { FormInput } from '../../FormInputs/Input/Input';
 import { FormTextArea } from '../../FormInputs/TextArea/Input';
 import { FormSelect } from '../../FormInputs/Select/Select';
 import { TagSelect } from '../../FormInputs/Select/TagSelect';
-import { ADD_PRODUCT, UPDATE_PRODUCT, PUBLISH } from '../../../GraphQL/Mutations';
+import { ADD_PRODUCT, UPDATE_PRODUCT } from '../../../GraphQL/Mutations';
 import { LOAD_CATEGORIES } from '../../../GraphQL/Queries';
 
 import './ProductForm.css';
 import { WelcomeContent } from '../../WelcomeContent';
 
 export const NewProductForm = () => {
-  const featureObj = {
-    name: "",
-    label: "",
-    attachment: null
-  }
   const [categories, setCategories] = useState([]);
-  const [productForm, setProductForm] = useState({features: [featureObj], keyWords: []});
+  const [productForm, setProductForm] = useState({features: [""], keyWords: [], attachments: []});
+  const [attachments, setAttachments] = useState([]);
   const [isAttachmentsUploaded, setIsAttachmentsUploaded] = useState(false)
   const [addProduct] = useMutation(ADD_PRODUCT);
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
-  const [publishProduct] = useMutation(PUBLISH);
   const {loading, data, error} = useQuery(LOAD_CATEGORIES);
   const navigate = useNavigate();
 
@@ -39,19 +35,13 @@ export const NewProductForm = () => {
 
   const handleFeatureInput = (event, index) => {
     const existedFeatures = productForm.features;
-    existedFeatures[index]['name'] = event.target.value;
-    setProductForm({...productForm, features: [...existedFeatures]});
-  }
-  
-  const handleFeatureLabelInput = (event, index) => {
-    const existedFeatures = productForm.features;
-    existedFeatures[index]['label'] = event.target.value;
+    existedFeatures[index] = event.target.value;
     setProductForm({...productForm, features: [...existedFeatures]});
   }
 
   const addNewFeatureToList = () => {
     const existedFeatures = productForm.features;
-    setProductForm({...productForm, features: [...existedFeatures, featureObj]});
+    setProductForm({...productForm, features: [...existedFeatures, ""]});
   }
 
   const removeFeatureList = (index) => {
@@ -64,20 +54,6 @@ export const NewProductForm = () => {
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-  };
-  
-  const featureAttachmentChange = ({ file: file }, index) => {
-    const existedFeatures = productForm.features;
-    existedFeatures[index]['attachment'] = file;
-    setProductForm({...productForm, features: [...existedFeatures]});
-  };
-  
-  const removeFeatureAttachment = ({ file: file }, index) => {
-    const existedFeatures = productForm.features;
-    const prodFeature = existedFeatures[index];
-    prodFeature['attachment'] = null;
-    existedFeatures.splice(index, 1);
-    setProductForm({...productForm, features: [...existedFeatures, prodFeature]});
   };
 
   const onPreview = async (file) => {
@@ -98,52 +74,46 @@ export const NewProductForm = () => {
     imgWindow?.document.write(image.outerHTML);
   };
 
+  const onRemove = async (file) => {
+    console.log("<<<<", file);
+  }
 
-  const clearOldImages = useCallback(async () => {
-    if (productForm.features && productForm.features.length > 0) {
-      for(let i = 0; i < productForm.features.length; i++) {
+  const clearOldImages = useCallback(() => {
+    if (attachments && attachments.length > 0) {
+      attachments.forEach(async (attachment) => {
         await axios({
           method: "put",
           url: "http://localhost:3300/product/remove_attachment",
           data: {
-            oldPath: productForm.features[i].path
+            oldPath: attachment.path
           },
           headers: { "Content-Type": "multipart/form-data" },
         });
-      }
-    }
-  }, [productForm.features]);
-
-  const publishApplication = async () => {
-    publishProduct({
-      variables: {
-        productId: productForm.id
-      }
+      })
+    } 
+    productForm.attachments.forEach(async (attachment) => {
+      const path = `/public${attachment.split("public")[1]}`
+      await axios({
+        method: "put",
+        url: "http://localhost:3300/product/remove_attachment",
+        data: {
+          oldPath: path
+        },
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     })
-    .then(res => {
-      openNotificationWithIcon('success', 'Success', res.data.publish.message);
-    })
-    .catch(errors => {
-      const code = errors.networkError.result.errors[0].extensions.code;
-      const message = errors.networkError.result.errors[0].message;
-      openNotificationWithIcon('error', code, message);
-    })
-    .finally((errors) => {
-      console.log("errors>>", errors);
-    })
-  }
+  }, [attachments, productForm.attachments]);
 
   
   const saveApplication = async () => {
     clearOldImages();
-    const attachmentFeatures = productForm.features;
     const updateAttachments = new Promise(async (resolve, reject) => {
-      if (productForm.features && productForm.features.length > 0) {
-        const prodFeatures = [];
-        for(let i = 0; i < productForm.features.length; i++) {
+      const appAttachments = [];
+      console.log("fileList>>>>", fileList);
+      if (fileList && fileList.length > 0) {
+        for(let i = 0; i < fileList.length; i++) {
           const formData = new FormData();
-          const productFeature = productForm.features[i];
-          formData.append("attachment", productFeature['attachment'].originFileObj);
+          formData.append("attachment", fileList[i].originFileObj);
           try {
             const attachmentResponse = await axios({
               method: "put",
@@ -152,23 +122,23 @@ export const NewProductForm = () => {
               headers: { "Content-Type": "multipart/form-data" },
             });
             const { fileResponse } = attachmentResponse.data;
-            productFeature['attachment'] = attachmentFeatures[i]['attachment'];
-            productFeature['url'] = fileResponse.url;
-            productFeature['path'] = fileResponse.path;
-            prodFeatures.push(productFeature);
+            appAttachments.push(fileResponse);
           } catch (error) {
+            console.log("File Attachment Error", error);
           }
         }
-        if (productForm.features.length > 0) {
-          resolve(prodFeatures);
+        setAttachments(appAttachments);
+        if (appAttachments.length > 0) {
+          resolve(appAttachments);
         }
       } else {
         reject('Please fill the required fields')
       }
     });
     updateAttachments
-      .then((appFeatureAttachments) => {
-        setProductForm({...productForm, features: [...appFeatureAttachments]});
+      .then((appAttachments) => {
+        const attachmentUrls = appAttachments.map(att => att.url);
+        setProductForm({...productForm, attachments: attachmentUrls});
         setIsAttachmentsUploaded(true);
       })
       .catch((error) => {
@@ -194,6 +164,7 @@ export const NewProductForm = () => {
   }, [data]);
 
   useEffect(() => {
+    console.log("isAttachmentsUploaded>>>", isAttachmentsUploaded);
     if (isAttachmentsUploaded) {
       if (productForm.id) {
         const updateProductForm = productForm;
@@ -206,13 +177,11 @@ export const NewProductForm = () => {
           }
         })
         .then(res => {
-          const formFeatures = productForm.features;
-          const formResp = res.data.updateProduct;
-          const newProddata = Object.assign({}, formResp, { features: formFeatures });
-          setProductForm({...newProddata});
+          setProductForm({...res.data.updateProduct});
           openNotificationWithIcon('success', 'Success', 'Application updated successfully!');
         })
         .catch(errors => {
+          // try to delete the file paths
           clearOldImages();
           const code = errors.networkError.result.errors[0].extensions.code;
           const message = errors.networkError.result.errors[0].message;
@@ -228,13 +197,11 @@ export const NewProductForm = () => {
           }
         })
         .then(res => {
-          const formFeatures = productForm.features;
-          const formResp = res.data.addProduct;
-          const newProddata = Object.assign({}, formResp, { features: formFeatures });
-          setProductForm({...newProddata});
+          setProductForm({...res.data.addProduct});
           openNotificationWithIcon('success', 'Success', 'Application created successfully!');
         })
         .catch(errors => {
+          // try to delete the file paths
           clearOldImages();
           const code = errors.networkError.result.errors[0].extensions.code;
           const message = errors.networkError.result.errors[0].message;
@@ -333,6 +300,7 @@ export const NewProductForm = () => {
                 label="Application / Software Description"
                 onChange={(event) => handleInput(event, 'description')}
                 value={productForm['description']}
+
               />
             </Col>
           </Row>
@@ -351,34 +319,25 @@ export const NewProductForm = () => {
             <p className='feature-list-label-sub-title'>(Max user can add 6 features for more please UPDRAGE)</p>
           </div>
           {productForm.features && productForm.features.map((feature, index) => {
-            const attachmentArray = feature.attachment ? [feature.attachment] : []
             return <Row gutter={12} className='features-row-container' key={`feature_${index}`}>
-              <Col span={6}>
+              <Col span={20}>
                 <FormInput 
-                  label={`Feature label ${index+1}`}
-                  onChange={(event) => handleFeatureLabelInput(event, index)}
-                  value={feature.label}
-                  required={true}
-                />
-              </Col>
-              <Col span={10}>
-                <FormTextArea 
                   label={`Feature ${index+1}`}
                   onChange={(event) => handleFeatureInput(event, index)}
-                  value={feature.name}
+                  value={feature}
                   required={true}
                 />
               </Col>
-              <Col span={6}>
+              <Col span={2}>
                 <Upload
-                  action=""
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                   listType="picture-card"
-                  fileList={attachmentArray}
-                  onChange={(event) => featureAttachmentChange(event, index)}
+                  fileList={fileList}
+                  onChange={onChange}
                   onPreview={onPreview}
-                  onRemove={(event) => removeFeatureAttachment(event, index)}
+                  onRemove={onRemove}
                 >
-                  {fileList.length <= 0 && '+ Upload'}
+                  {fileList.length < 1 && '+ Upload'}
                 </Upload>
               </Col>
               <Col span={2}>
@@ -389,9 +348,26 @@ export const NewProductForm = () => {
             </Row>
           })}
           {productForm.features && productForm.features.length < 6 ? <div className='add-more-feature-lable' onClick={addNewFeatureToList}>+ Add More</div> : <></>}
+          <Row>
+            <p className='attachment-label'>Attach Screenshots & Videos:</p>
+            <Col span={24}>
+              <ImgCrop rotate>
+                <Upload
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  listType="picture-card"
+                  fileList={fileList}
+                  onChange={onChange}
+                  onPreview={onPreview}
+                  onRemove={onRemove}
+                >
+                  {fileList.length < 5 && '+ Upload'}
+                </Upload>
+              </ImgCrop>
+            </Col>
+          </Row>
           <div className="action-container">
             <button className='btn-primary' onClick={saveApplication}>Save as Draft</button>
-            {productForm.id ? <button className='btn-primary' onClick={publishApplication}>Publish</button> : <></>}
+            <button className='btn-primary'>Publish</button>
             <button className='btn-plain' onClick={() => navigate('/', { replace: true })}>Cancel</button>
           </div>
         </div>
