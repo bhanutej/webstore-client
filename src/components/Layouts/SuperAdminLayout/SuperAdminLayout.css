@@ -1,0 +1,15 @@
+#components-layout-demo-side .logo {
+  height: 44px !important;
+  margin: 16px !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+#components-layout-demo-side .ant-layout-sider.ant-layout-sider-dark.ant-layout-sider-has-trigger,
+#components-layout-demo-side .ant-menu.ant-menu-root.ant-menu-inline.ant-menu-dark,
+#components-layout-demo-side .ant-menu.ant-menu-root.ant-menu-vertical.ant-menu-dark.ant-menu-inline-collapsed {
+  background: #003459;
+}
+
+#components-layout-demo-side .ant-menu-item.ant-menu-item-active.ant-menu-item-selected {
+  background-color: #0a4772;
+}

@@ -3,8 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from, ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-
-import { Navbar } from './components/NavBar/NavBar';
 import { Home } from './components/Home';
 import { About } from './components/About';
 import { Login } from './components/Authentications/Login';
@@ -12,6 +10,12 @@ import { AuthProvider } from './auth-context/auth';
 import { NewProductForm } from './components/Products.js/ProductForm/ProductForm';
 import Protected from './auth-context/Protected';
 import { ProductView } from './components/Products.js/ProductView/ProductView';
+import { AdminLayout } from './components/Layouts/AdminLayout/AdminLayout';
+import { Dashboard } from './components/Dashboard/Dashboard';
+import { SuperAdminLayout } from './components/Layouts/SuperAdminLayout/SuperAdminLayout';
+import { PageNotFound } from './components/PageNotFound/PageNotFound';
+
+const storageAuthUser = JSON.parse(localStorage.getItem("authUser"));
 
 const errorLink = onError(({ graphqlErrors, networkError }) => {
   if ( graphqlErrors ) {
@@ -29,7 +33,6 @@ const link = from([
 
 const authLink = new ApolloLink((operation, forward) => {
   // Retrieve the authorization token from local storage.
-  const storageAuthUser = JSON.parse(localStorage.getItem("authUser"));
   let authToken = "";
   if(storageAuthUser) {
     authToken = storageAuthUser.token;
@@ -50,26 +53,39 @@ const client = new ApolloClient({
   link: authLink.concat(link), // Chain it with the HttpLink
 });
 
+
 function App() {
   return (
     <>
       <ApolloProvider client={client}>
         <AuthProvider>
-          <Navbar />
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='about' element={<About />} />
-            <Route path='login' element={<Login />} />
-            <Route path='/addProduct' element={
-              <Protected>
-                <NewProductForm />
-              </Protected>
-            } />
-            <Route path='/productView/:PRODUCT_ID' element={
-              <Protected>
-                <ProductView />
-              </Protected>
-            } />
+            {storageAuthUser && storageAuthUser.role === 'superadmin' ? (
+              <>
+                <Route path='/' element={<SuperAdminLayout />}>
+                  <Route index element={<Dashboard />}/>
+                </Route>
+                <Route path='*' element={<PageNotFound />} />
+              </>
+            ) : storageAuthUser && storageAuthUser.role === 'admin' ? (
+              <Route path='/admin' element={<AdminLayout />}>
+                <Route index element={<Home />} />
+                <Route path='about' element={<About />} />
+                <Route path='login' element={<Login />} />
+                <Route path='addProduct' element={
+                  <Protected>
+                    <NewProductForm />
+                  </Protected>
+                } />
+                <Route path='productView/:PRODUCT_ID' element={
+                  <Protected>
+                    <ProductView />
+                  </Protected>
+                } />
+              </Route> 
+            ) : (
+              <Route index element={<PageNotFound />}/>
+            )} 
           </Routes>
         </AuthProvider>
       </ApolloProvider>

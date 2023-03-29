@@ -26,7 +26,8 @@ export const Login = () => {
     .then(res => {
       localStorage.setItem("authUser", JSON.stringify(res.data.login));
       auth.login(JSON.parse(localStorage.getItem("authUser")));
-      navigate(redirectPath, { replace: true })
+      navigate(redirectPath, { replace: true });
+      window.location.reload();
     })
     .catch(error => {
       setLoginError(JSON.stringify(error.message));

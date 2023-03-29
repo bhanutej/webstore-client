@@ -52,7 +52,7 @@
 
 .action-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .add-product-form-container .action-container button{

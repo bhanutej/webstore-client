@@ -31,9 +31,9 @@ export const Navbar = () => {
         </NavLink>
       </div>
       <div className="navbarMenus">
-        <NavLink to='/about' style={navLinkStyles}>
+        {authUser && authUser.role != "superadmin" && <NavLink to='/about' style={navLinkStyles}>
           About
-        </NavLink>
+        </NavLink>}
         { (!authUser) && (
           <NavLink to='/login' style={navLinkStyles}>
             Login
