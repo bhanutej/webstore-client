@@ -56,3 +56,12 @@ export const LOAD_CATEGORIES = gql`
     }
   }
 `;
+
+export const LOAD_NEWS_LETTER_EMAILS = gql`
+  query NewsLetterEmails($limit: Int!) {
+    newsLetterEmails(limit: $limit) {
+      id
+      email
+    }
+  }
+`;

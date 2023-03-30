@@ -1,0 +1,8 @@
+.news-letter-layout-container {
+  margin: 1rem;
+}
+
+.news-letter-layout-container #post_news_button_container {
+  margin-bottom: 1rem;
+  float: right;
+}

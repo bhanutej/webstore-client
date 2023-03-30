@@ -14,6 +14,7 @@ import { AdminLayout } from './components/Layouts/AdminLayout/AdminLayout';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { SuperAdminLayout } from './components/Layouts/SuperAdminLayout/SuperAdminLayout';
 import { PageNotFound } from './components/PageNotFound/PageNotFound';
+import { NewsLetterEmail } from './components/NewsLetterSubscription/NewsLetterEmail/NewsLetterEmail';
 
 const storageAuthUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -64,6 +65,7 @@ function App() {
               <>
                 <Route path='/' element={<SuperAdminLayout />}>
                   <Route index element={<Dashboard />}/>
+                  <Route path='newsLetter' element={<NewsLetterEmail />} />
                 </Route>
                 <Route path='*' element={<PageNotFound />} />
               </>

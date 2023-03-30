@@ -87,3 +87,16 @@ export const UPDATE_PRODUCT = gql`
     }
   }
 `;
+
+export const DELETE_NEWS_SUBSCRIBER_MUTATION = gql`
+  mutation deleteNewsSubscriber(
+    $id: Int!
+  ) {
+    deleteNewsSubscriber( input: {
+      id: $id
+    }
+    ) {
+      message
+    }
+  }
+`;
