@@ -7,14 +7,15 @@ import { Home } from './components/Home';
 import { About } from './components/About';
 import { Login } from './components/Authentications/Login';
 import { AuthProvider } from './auth-context/auth';
-import { NewProductForm } from './components/Products.js/ProductForm/ProductForm';
+import { NewProductForm } from './components/Products/ProductForm/ProductForm';
 import Protected from './auth-context/Protected';
-import { ProductView } from './components/Products.js/ProductView/ProductView';
+import { ProductView } from './components/Products/ProductView/ProductView';
 import { AdminLayout } from './components/Layouts/AdminLayout/AdminLayout';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { SuperAdminLayout } from './components/Layouts/SuperAdminLayout/SuperAdminLayout';
 import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { NewsLetterEmail } from './components/NewsLetterSubscription/NewsLetterEmail/NewsLetterEmail';
+import { ProductList } from './components/Products/ProductList/ProductList';
 
 const storageAuthUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -64,7 +65,7 @@ function App() {
             {storageAuthUser && storageAuthUser.role === 'superadmin' ? (
               <>
                 <Route path='/' element={<SuperAdminLayout />}>
-                  <Route index element={<Dashboard />}/>
+                  <Route index element={<ProductList />}/>
                   <Route path='newsLetter' element={<NewsLetterEmail />} />
                 </Route>
                 <Route path='*' element={<PageNotFound />} />

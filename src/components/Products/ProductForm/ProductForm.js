@@ -29,6 +29,8 @@ export const NewProductForm = () => {
   const {loading, data, error} = useQuery(LOAD_CATEGORIES);
   const navigate = useNavigate();
 
+  console.log(error);
+
   const handleInput = (event, field) => {
     setProductForm({...productForm, [field]: event.target.value});
   }

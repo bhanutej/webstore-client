@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const LOAD_PRODUCTS = gql`
-  query Products {
-    products {
+  query Products($limit: Int!, $status: String!) {
+    products(limit: $limit, status: $status) {
       id
       name
       companyName
@@ -11,6 +11,7 @@ export const LOAD_PRODUCTS = gql`
       contact
       description
       logo
+      status
     }
   }
 `;
@@ -41,7 +42,7 @@ export const LOAD_PRODUCT = gql`
 
 export const LOAD_HOME_PRODUCTS = gql`
   query Products {
-    products(limit: 8) {
+    products(limit: 8, status: "published") {
       id
       name
     }

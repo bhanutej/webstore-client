@@ -100,3 +100,16 @@ export const DELETE_NEWS_SUBSCRIBER_MUTATION = gql`
     }
   }
 `;
+
+export const UNPUBLISH_APPLICATION_MUTATION = gql`
+mutation unPublish(
+  $productId: Int!
+) {
+  unPublish( input: {
+    productId: $productId
+  }
+  ) {
+    message
+  }
+}
+`;

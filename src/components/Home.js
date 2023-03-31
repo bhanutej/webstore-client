@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { Products } from './Products.js/Products';
+import { Products } from './Products/Products';
 import { HowItWork } from './HowItWork';
 import './Home.css';
 import { NewsLetterSubscription } from './NewsLetterSubscription/NewsLetterSubscription';
