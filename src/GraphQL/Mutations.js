@@ -18,6 +18,28 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
+export const SIGNUP_MUTATION = gql`
+  mutation signup(
+    $username: String!
+    $email: String!
+    $password: String!
+    $role: String!
+  ) {
+    register( input: {
+      name: $username
+      email: $email
+      password: $password
+      role: $role
+    }
+    ) {
+      id
+      name
+      email
+      role
+    }
+  }
+`;
+
 export const ADD_NEWS_SUBSCRIBER_MUTATION = gql`
   mutation addNewsSubscriber(
     $email: String!

@@ -3,8 +3,10 @@ import { Button, Popconfirm, Table, notification, Spin } from 'antd';
 import { useQuery, useMutation } from "@apollo/client";
 import { LOAD_PRODUCTS } from '../../../GraphQL/Queries';
 import { PUBLISH, UNPUBLISH_APPLICATION_MUTATION } from '../../../GraphQL/Mutations';
+import { useNavigate } from 'react-router-dom';
 
 export const ProductList = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const {loading, data, error} = useQuery(LOAD_PRODUCTS, {
     variables: { limit: 20, status: 'all' },
@@ -58,6 +60,10 @@ export const ProductList = () => {
     });
   }
 
+  const navigateToProduct = (productId) => {
+    navigate(`/productView/${productId}`);
+  }
+
   const tableColumns = [
     {
       title: 'Name',
@@ -88,7 +94,7 @@ export const ProductList = () => {
           <Button onClick={() => handlePublishApplication(record.id)}>Publish</Button>
           : <Button onClick={() => handleUnPublishApplication(record.id)}>Un publish</Button>
         }
-          <Button>Edit</Button>
+          <Button onClick={() => navigateToProduct(record.id)}>View</Button>
           <Popconfirm title="Sure to delete?" onConfirm={() => (record.id)}>
             <Button>Delete</Button>
           </Popconfirm>

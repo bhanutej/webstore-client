@@ -249,6 +249,12 @@ export const NewProductForm = () => {
     }
   }, [isAttachmentsUploaded]);
 
+  const dummyRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
+
   return <>
     {loading && <Spin />}
     
@@ -373,7 +379,7 @@ export const NewProductForm = () => {
               </Col>
               <Col span={6}>
                 <Upload
-                  action=""
+                  customRequest={dummyRequest}
                   listType="picture-card"
                   fileList={attachmentArray}
                   onChange={(event) => featureAttachmentChange(event, index)}

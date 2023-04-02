@@ -6,10 +6,19 @@ import { HowItWork } from './HowItWork';
 import './Home.css';
 import { NewsLetterSubscription } from './NewsLetterSubscription/NewsLetterSubscription';
 import { WelcomeContent } from './WelcomeContent';
+import { useAuth } from '../auth-context/auth';
 
 
 export const Home = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const validateBeforeAddProduct = () => {
+    if (!auth.user) {
+      navigate("/signUp", { replace: true });
+    } else {
+      navigate('/addProduct', { replace: true });
+    }
+  }
 
   return (<>
     <Row>
@@ -18,7 +27,7 @@ export const Home = () => {
         <div className="home-container">
           <WelcomeContent />
           <div className="list-products-btn-container">
-            <button className="btn-list-products" onClick={() => navigate('/addProduct', { replace: true })}>
+            <button className="btn-list-products" onClick={validateBeforeAddProduct}>
               List your Application
             </button>
           </div>

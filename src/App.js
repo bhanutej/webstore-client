@@ -16,6 +16,7 @@ import { SuperAdminLayout } from './components/Layouts/SuperAdminLayout/SuperAdm
 import { PageNotFound } from './components/PageNotFound/PageNotFound';
 import { NewsLetterEmail } from './components/NewsLetterSubscription/NewsLetterEmail/NewsLetterEmail';
 import { ProductList } from './components/Products/ProductList/ProductList';
+import { Signup } from './components/Authentications/Signup';
 
 const storageAuthUser = JSON.parse(localStorage.getItem("authUser"));
 
@@ -67,6 +68,11 @@ function App() {
                 <Route path='/' element={<SuperAdminLayout />}>
                   <Route index element={<ProductList />}/>
                   <Route path='newsLetter' element={<NewsLetterEmail />} />
+                  <Route path='productView/:PRODUCT_ID' element={
+                    <Protected>
+                      <ProductView />
+                    </Protected>
+                  } />
                 </Route>
                 <Route path='*' element={<PageNotFound />} />
               </>
@@ -74,7 +80,6 @@ function App() {
               <Route path='/admin' element={<AdminLayout />}>
                 <Route index element={<Home />} />
                 <Route path='about' element={<About />} />
-                <Route path='login' element={<Login />} />
                 <Route path='addProduct' element={
                   <Protected>
                     <NewProductForm />
@@ -87,7 +92,12 @@ function App() {
                 } />
               </Route> 
             ) : (
-              <Route index element={<PageNotFound />}/>
+              <>
+                <Route index element={<Home />} />
+                <Route path='signUp' element={<Signup />} />
+                <Route path='login' element={<Login />} />
+                <Route path='pageNotFound' element={<PageNotFound />} />
+              </>
             )} 
           </Routes>
         </AuthProvider>
