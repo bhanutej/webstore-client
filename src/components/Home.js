@@ -14,9 +14,9 @@ export const Home = () => {
   const auth = useAuth();
   const validateBeforeAddProduct = () => {
     if (!auth.user) {
-      navigate("/signUp", { replace: true });
+      navigate("/login", { replace: true });
     } else {
-      navigate('/addProduct', { replace: true });
+      navigate('/admin/addProduct', { replace: true });
     }
   }
 

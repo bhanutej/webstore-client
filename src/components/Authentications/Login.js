@@ -14,7 +14,13 @@ export const Login = () => {
   const location = useLocation();
   const auth = useAuth();
 
-  const redirectPath = location.state?.path || '/'
+  let redirectPath = location.state?.path || '/admin'
+
+  // if (auth && auth.user.role === 'admin') {
+  //   redirectPath = '/admin'
+  // } else {
+  //   redirectPath = '/'
+  // }
 
   const onFinish = (values) => {
     login({
